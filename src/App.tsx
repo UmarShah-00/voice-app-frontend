@@ -9,14 +9,14 @@ import SavedTexts from './pages/SavedTexts';
 import AuthHandler from "./pages/AuthHandler";
 
 // ✅ PublicRoute component
-const PublicRoute: React.FC<{ children: JSX.Element }> = ({ children }) => {
+const PublicRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const token = localStorage.getItem("token");
   if (token) return <Navigate to="/" replace />; // Logged in → redirect home
   return children;
 };
 
 // ✅ ProtectedRoute component
-const ProtectedRoute: React.FC<{ children: JSX.Element }> = ({ children }) => {
+const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const token = localStorage.getItem("token");
   if (!token) return <Navigate to="/login" replace />; // Not logged in → redirect login
   return children;

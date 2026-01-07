@@ -69,7 +69,7 @@ const GrammarEditor: React.FC<GrammarEditorProps> = ({
         }
         current += len;
       } else {
-        for (const child of node.childNodes) {
+        for (const child of Array.from(node.childNodes)) {
           if (walk(child)) return true;
         }
       }

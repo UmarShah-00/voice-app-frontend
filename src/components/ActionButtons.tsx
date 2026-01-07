@@ -22,8 +22,6 @@ const chunkText = (text: string, chunkSize = 200) => {
 const ActionButtons: React.FC<ActionButtonsProps> = ({ text, setText, lang }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [voiceRate, setVoiceRate] = useState(1);
-  const [highlightColor, setHighlightColor] = useState("yellow");
-  const [currentWordIndex, setCurrentWordIndex] = useState<number>(-1);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const stopRequestedRef = useRef(false);
 
@@ -49,7 +47,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({ text, setText, lang }) =>
           const audio = new Audio(url);
           audioRef.current = audio;
           await new Promise<void>((resolve) => {
-            audio.onended = resolve;
+            audio.onended = () => resolve();
             audio.play();
           });
         } catch (err) {
@@ -70,7 +68,6 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({ text, setText, lang }) =>
           for (let i = 0; i < words.length; i++) {
             charCount += words[i].length + 1;
             if (charCount >= event.charIndex) {
-              setCurrentWordIndex(i);
               break;
             }
           }
@@ -79,7 +76,6 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({ text, setText, lang }) =>
 
       utterance.onend = () => {
         setIsPlaying(false);
-        setCurrentWordIndex(-1);
       };
 
       speechSynthesis.speak(utterance);
@@ -97,7 +93,6 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({ text, setText, lang }) =>
     }
 
     speechSynthesis.cancel();
-    setCurrentWordIndex(-1);
   };
 
   /* ---------------- DOWNLOAD FUNCTIONS ---------------- */
@@ -114,7 +109,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({ text, setText, lang }) =>
     hiddenDiv.style.whiteSpace = "pre-wrap";
     hiddenDiv.style.fontSize = "16px";
     hiddenDiv.style.width = "600px";
-    hiddenDiv.style.backgroundColor = highlightColor;
+    hiddenDiv.style.backgroundColor = "transparent";
     hiddenDiv.innerText = text;
     document.body.appendChild(hiddenDiv);
 
