@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-background text-gray-900 font-sans;
+}
+/* add this CSS in your global CSS ya component ke style section me */
+.blinking-cursor {
+  caret-color: #4f46e5; /* Indigo color */
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  from,
+  to {
+    caret-color: transparent;
+  }
+  50% {
+    caret-color: #4f46e5;
+  }
+}
